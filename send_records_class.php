@@ -5,14 +5,15 @@
    - if specified from fields_convert_int array it cast to integer the selected records
    - send mode option ftp: save records (json format) on server toward ftp
    - send mode option curl: performs a curl post request to server with records attached (json format)  
-  Version: 1.1.0
+  Version: 1.1.1
   Author: Sergio Sebastiani
-  Date: 25-02-2022
+  Date: 07-03-2023
 */
 
 class transfer_records {
   //log filename
   public $log_filename;
+  public $log_directory;
 
   //Locale file where is saved ID value of the last record sent  
   public $last_id_imported_file_path;
@@ -50,8 +51,8 @@ class transfer_records {
   
   function send_records(){
     //set log file path
-    $log_date_folder = dirname(__FILE__).'/'.date("Y-m-d");
-    if(!is_dir($log_date_folder)){mkdir($log_date_folder);}
+    $log_date_folder = dirname(__FILE__).'/'.$this->log_directory.'/'.date("Y-m-d");
+    if(!is_dir($log_date_folder)){mkdir($log_date_folder, 0777, true);}
     $log_path = $log_date_folder.'/'.$this->log_filename;
 
     $log_msg = '';
@@ -66,9 +67,12 @@ class transfer_records {
     $conn = mysqli_connect($this->servername,$this->dBusername,$this->dBpassword, $this->dBname);
     if (!$conn) {die("connection failed: " . mysqli_connect_error());}
     else{echo 'connected to dB: '.$this->dBname.'<br>';}
+    
+    //create file with last index if not present
+    if (!file_exists(dirname(__FILE__).'/'.$this->last_id_imported_file_path)) {file_put_contents(dirname(__FILE__).'/'.$this->last_id_imported_file_path, '-1');}
 
     //create - execute query
-    $start_id_query = file_get_contents(dirname(__FILE__).'\\'.$this->last_id_imported_file_path)+1;
+    $start_id_query = file_get_contents(dirname(__FILE__).'/'.$this->last_id_imported_file_path)+1;
     $log_msg = 'Start id query: '. $start_id_query; 
     echo $log_msg.'<br>';
     file_put_contents($log_path, date("Y-m-d H:i:s") . ': '.$log_msg.PHP_EOL,FILE_APPEND );
