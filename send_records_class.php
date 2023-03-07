@@ -176,7 +176,7 @@ class transfer_records {
         $responce = json_decode($content, true);
         //print_r($responce);
 
-        if($responce['last_insert_record']){
+        if($responce['last_insert_record'] and $responce['responce_type'] == 'success'){
           $log_msg = "Saved records with curl into destination table: ".$this->destitnation_table;
           echo $log_msg.'<br>';
           file_put_contents($log_path, date("Y-m-d H:i:s") . ': '.$log_msg.PHP_EOL,FILE_APPEND );
