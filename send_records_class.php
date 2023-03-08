@@ -22,7 +22,7 @@ class transfer_records {
   public $id_range;
 
   //Connection to source dB parameters 
-  public $serveramen;     //server:porta
+  public $servername;     //server:porta
   public $dBusername;     //username
   public $dBpassword;     //password
   public $dBname;         //dB
@@ -182,7 +182,7 @@ class transfer_records {
           file_put_contents($log_path, date("Y-m-d H:i:s") . ': '.$log_msg.PHP_EOL,FILE_APPEND );
         
           //Update local file with last imported primary key value
-          file_put_contents(dirname(__FILE__).'\\'.$this->last_id_imported_file_path, $responce['last_insert_record']);
+          file_put_contents(dirname(__FILE__).'/'.$this->last_id_imported_file_path, $responce['last_insert_record']);
           $log_msg = "Up dated last imported record (".$responce['last_insert_record'].") on file: ".$this->last_id_imported_file_path;
           echo $log_msg.'<br>';
           file_put_contents($log_path, date("Y-m-d H:i:s") . ': '.$log_msg.PHP_EOL,FILE_APPEND );
