@@ -41,6 +41,9 @@ class transfer_records {
   public $ftp_userpass;  //password
   public $ftp_server;    //server
   public $ftp_folder;    //Cartella in cui vengono salvati file .json
+  
+  //ftp filename to save data
+  public $ftp_filename; 
 
   //Parametri invio dati curl
   public $curl_url;
